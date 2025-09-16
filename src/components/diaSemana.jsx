@@ -1,3 +1,4 @@
+import React from 'react';
 import chuvaDia from '../assets/icons/chuvaDia.png';
 import diaNum from '../assets/icons/diaNub.png';
 import diaBom from '../assets/icons/diaBom.png';

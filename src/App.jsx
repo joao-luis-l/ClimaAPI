@@ -30,27 +30,28 @@ function App() {
 
   const formatter = new Intl.DateTimeFormat("pt-BR", { hour: "numeric", minute: "numeric", hour12: false });
   const API_KEY = "6c6a85e7ed87252729616bd1c3c5a758";
+
   const getData = async () => {
     if (!inputValue) return;
 
     try {
+      // 1) coordenadas
       const geoResponse = await axios.get(
-        `http://api.openweathermap.org/geo/1.0/direct?q=${inputValue}&limit=1&appid=${API_KEY}`
+        `https://api.openweathermap.org/data/2.5/weather?q=${inputValue}&appid=${API_KEY}&units=metric&lang=pt_br`
       );
 
-      if (!geoResponse.data[0]) {
-        window.alert("Cidade não encontrada!");
-        return;
-      }
+      const { coord } = geoResponse.data;
+      const lat = coord.lat;
+      const lon = coord.lon;
 
-      const { lat, lon } = geoResponse.data[0];
-
+      //previsao
       const weatherResponse = await axios.get(
-        `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=minutely,alerts&units=metric&appid=${API_KEY}&lang=pt_br`
+        `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=metric&lang=pt_br&exclude=alerts&appid=${API_KEY}`
       );
 
       const data = weatherResponse.data;
 
+      // states
       const tempArr = data.hourly.map(h => h.temp);
       setTemperature2(tempArr);
       setTempHoraAtual(tempArr[new Date().getHours()]);
@@ -149,4 +150,3 @@ function App() {
 }
 
 export default App;
-
