@@ -1,0 +1,278 @@
+
+.diaAtual {
+  font-size: 5vh;
+  display: flex;
+  justify-content: center;
+}
+
+.background {
+  z-index: -1;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+
+.background img {
+  position: absolute;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+}
+
+
+/* Icone Logo */
+.cloudsIcon {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100px;
+  height: 100px;
+}
+
+.imageLogo {
+  display: flex;
+  justify-content: left;
+  width: 20vh;
+  height: fit-content;
+}
+
+
+/* Icone temp atual */
+.divIconeTemp {
+  width: 100%;
+  height: 12vh;
+}
+
+/* Input principal */
+.inputPrincipal {
+  display: flex;
+  flex-direction: column;
+  color: white;
+  margin-left: 5vw;
+}
+
+._max_sunrise_sunset {
+  display: flex;
+}
+
+.icon_min_max {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 9vw;
+  height: fit-content;
+}
+
+.body {
+  display: flex;
+  flex-direction: row;
+  padding: 20px;
+}
+
+/* Mains */
+.mainEsq {
+  display: flex;
+  flex-direction: column;
+  width: 70vw;
+  height: 90vh;
+  justify-content: space-between;
+  margin-right: 3vh;
+}
+
+.mainDir {
+  display: flex;
+  flex-direction: row-reverse;
+  color: white;
+  width: 30vw;
+  height: 80vh;
+}
+
+/* Dias da Semana */
+
+.divDiasDaSemana {
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px;
+  color: white;
+  background: linear-gradient(to bottom, rgba(241, 241, 243, 0), rgba(203, 227, 247, 0.603));
+  position: relative;
+  margin-bottom: 2vh;
+  margin-right: 5px;
+}
+
+.headerSemana {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.pDiaDaSemana {
+  font-size: 17px;
+  display: flex;
+  margin: 0;
+}
+
+.componenteMinMaxSemana {
+  font-size: 17px;
+  display: flex;
+  justify-content: center;
+  margin: 3px;
+}
+
+.animationIconSemana {
+  width: 20%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  top: 0;
+  right: 0;
+}
+
+/* temperatura por hora */
+.tempHora {
+  display: flex;
+  color: white;
+  background: linear-gradient(to bottom, rgba(241, 241, 243, 0), rgba(203, 227, 247, 0.603));
+  border-radius: 16px;
+  width: fit-content;
+  justify-content: space-around;
+}
+
+.componenteTempHora {
+  display: flex;
+  flex-direction: row;
+  font-size: 21px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.componenteInternoTempHora {
+  margin: 4px;
+  margin-top: 3px;
+  font-size: 2.5vh;
+}
+
+.diaTempHora {
+  font-size: 20px;
+  margin: 0;
+}
+
+.infoMomentoSL {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 70vh;
+}
+
+.infoMomento {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 50px;
+}
+
+.min_max {
+  display: flex;
+  justify-content: center;
+  margin: 15px;
+}
+
+.componenteMinMax {
+  display: flex;
+  margin-left: 3px;
+  justify-content: center;
+}
+
+.componenteMin {
+  margin-right: 3px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.componenteMin p {
+  margin-right: 3px;
+}
+
+.componenteMax {
+  margin-right: 3px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.componenteMax p {
+  margin-right: 3px;
+}
+
+.componenteTempAtual {
+  font-size: 15vh;
+}
+
+.precipitation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.componentPreciptation {
+  width: max-content;
+}
+
+.componentPreciptation p {
+  margin: 0;
+}
+
+.mainSup {
+  display: flex;
+}
+
+.mainInf {
+  width: 100%;
+  margin-top: 2vh;
+}
+
+.sunriseSunset {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.componenteSunrise {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin: 10px;
+}
+
+.componenteSunset {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin: 10px;
+}
+
+
+
+.app-background {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+
+  background: url('./assets/background_dia.png') no-repeat center center;
+  background-size: 100% 100%; /* <-- força a imagem a cobrir largura e altura */
+  image-rendering: pixelated; /* mantém o visual de pixel art */
+}
+
