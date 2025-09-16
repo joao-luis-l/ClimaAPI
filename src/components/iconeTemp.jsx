@@ -1,35 +1,36 @@
-import diaBom from '../assets/backgrounds/DiaSol.png';
+import chuvaDia from '../assets/icons/chuvaDia.png'
+import noiteChuva from '../assets/icons/chuvaNoite.png'
+import noiteNub from '../assets/icons/noiteNub.png'
+import noiteBoa from '../assets/icons/noiteBoa.png'
+import diaNub from '../assets/icons/diaNub.png'
+import diaBom from '../assets/icons/diaBom.png'
 
-function Background(props) {
+
+
+function IconeTemp(props) {
   const { precipitationSumDay, sunset, sunrise, cloudcover } = props
   const hoje = new Date()
   const hours = hoje.getHours().toString().padStart(2, '0')
-  // const minutes = hoje.getMinutes().toString().padStart(2, '0')
-  // const time = `${hours}:${minutes}`
   const horaSunrise = sunrise.split(':')[0]
   const horaSunset = sunset.split(':')[0]
   const cloudcoverHour = cloudcover[hours]
 
+  let animationData = null
+
   if (cloudcoverHour> 40 && precipitationSumDay >= 5 && hours >= horaSunset && hours > horaSunrise) {
-    return (<div className='background'>
-    <img src={noiteChuva} />
-  </div>)
+    animationData = noiteChuva
   } else if (cloudcoverHour> 40 && precipitationSumDay < 5 && hours >= horaSunset && hours > horaSunrise) {
-    return (<div className='background'>
-    <img src={noiteNum} /></div>)
+    animationData = noiteNub
   } else if (cloudcoverHour< 40 && precipitationSumDay <= 3 && hours >= horaSunset && hours > horaSunrise) {
-    return (<div className='background'>
-    <img src={noiteBoa} /></div>)
+    animationData = noiteBoa
   } else if (cloudcoverHour> 40 && precipitationSumDay >= 5 && hours < horaSunset && hours >= horaSunrise) {
-    return (<div className='background'>
-    <img src={diaChuva} /></div>)
+    animationData = chuvaDia
   } else if (cloudcoverHour> 40 && precipitationSumDay < 5 && hours < horaSunset && hours >= horaSunrise) {
-    return (<div className='background'>
-    <img src={diaNum} /></div>)
+    animationData = diaNub
   } else {
-    return (<div className='background'>
-      <img src={diaBom} /></div>)
+    animationData = diaBom
   }
+ 
 }
 
-export default Background
+export default IconeTemp

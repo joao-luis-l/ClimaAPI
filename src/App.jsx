@@ -8,6 +8,7 @@ import TempHora from "./components/tempHora";
 import Precipitation from "./components/previsao";
 import DiasDaSemana from "./components/diaSemana";
 import Background from "./components/Background";
+import IconeTemp from "./components/iconeTemp";
 
 function App() {
   const [inputValue, setInputValue] = useState("Porto Alegre");
@@ -149,3 +150,4 @@ function App() {
 }
 
 export default App;
+
