@@ -1,11 +1,14 @@
-import diaBom from '../assets/backgrounds/DiaSol.png';
+import diaBom from '../assets/backgrounds/diaSol.png'
+
+
+
+
 
 function Background(props) {
   const { precipitationSumDay, sunset, sunrise, cloudcover } = props
   const hoje = new Date()
   const hours = hoje.getHours().toString().padStart(2, '0')
-  // const minutes = hoje.getMinutes().toString().padStart(2, '0')
-  // const time = `${hours}:${minutes}`
+
   const horaSunrise = sunrise.split(':')[0]
   const horaSunset = sunset.split(':')[0]
   const cloudcoverHour = cloudcover[hours]

@@ -1,17 +1,13 @@
-
-
-
+import chuvaDia from '../assets/icons/chuvaDia.png';
+import diaNum from '../assets/icons/diaNub.png';
+import diaBom from '../assets/icons/diaBom.png';
+import { Fragment } from 'react';
 
 function DiasSemana(props) {
-  const {
-    maxSemana,
-    minSemana,
-    precipitationSum,
-    cloudcover
-  } = props;
+  const { maxSemana, minSemana, precipitationSum, cloudcover } = props;
 
   let hours = 12;
-  let cloudcoverHour = []
+  let cloudcoverHour = [];
   const diaSemana = [
     "Domingo",
     "Segunda-feira",
@@ -21,6 +17,7 @@ function DiasSemana(props) {
     "Sexta-feira",
     "Sábado",
   ];
+
   const hoje = new Date();
   const diaDaSemanaAtual = hoje.getDay();
   const diasDaSemana = [];
@@ -29,8 +26,8 @@ function DiasSemana(props) {
   while (diasDaSemana.length < diaSemana.length - 1) {
     diasDaSemana.push(diaSemana[i]);
     i = (i + 1) % 7;
-    hours+=24
-   cloudcoverHour.push(cloudcover[hours])
+    hours += 24;
+    cloudcoverHour.push(cloudcover[hours]);
   }
 
   return (
@@ -41,36 +38,22 @@ function DiasSemana(props) {
         Array.isArray(cloudcoverHour) &&
         Array.isArray(maxSemana) ? (
           diasDaSemana.map((dia, index) => {
-            let icone;
+            let iconeSrc;
 
-            if (
-              cloudcoverHour[index]> 40 && precipitationSum[index] >= 5
-            ) {
-              icone = (
-                <div className="animationIconSemana">
-                  <Lottie animationData={diaChuva} />
-                </div>
-              );
-            } else if (
-              cloudcoverHour[index]> 40 && precipitationSum[index] < 5
-            ) {
-              icone = (
-                <div className="animationIconSemana">
-                  <Lottie animationData={diaNum} />
-                </div>
-              );
+            if (cloudcoverHour[index] > 40 && precipitationSum[index] >= 5) {
+              iconeSrc = chuvaDia;
+            } else if (cloudcoverHour[index] > 40 && precipitationSum[index] < 5) {
+              iconeSrc = diaNum;
             } else {
-              icone = (
-                <div className="animationIconSemana">
-                  <Lottie animationData={diaBom} />
-                </div>
-              );
+              iconeSrc = diaBom;
             }
 
             return (
               <div className="divDiasDaSemana" key={index}>
-                <div className="headerSemana">{icone}
-                  <h6 className="pDiaDaSemana">{dia}</h6></div>
+                <div className="headerSemana">
+                  <img className="animationIconSemana" src={iconeSrc} alt="Ícone do clima" />
+                  <h6 className="pDiaDaSemana">{dia}</h6>
+                </div>
                 <div className="componenteMinMaxSemana">
                   <div className="divTempMinSemana">{minSemana[index]}°</div>-
                   <div className="divTempMaxSemana">{maxSemana[index]}°</div>
