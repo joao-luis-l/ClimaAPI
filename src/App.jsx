@@ -29,8 +29,7 @@ function App() {
   const [tempHoraAtual, setTempHoraAtual] = useState(0);
 
   const formatter = new Intl.DateTimeFormat("pt-BR", { hour: "numeric", minute: "numeric", hour12: false });
-  const API_KEY = "SUA_CHAVE_OPENWEATHER"; // Coloque sua chave aqui
-
+  const API_KEY = "6c6a85e7ed87252729616bd1c3c5a758";
   const getData = async () => {
     if (!inputValue) return;
 

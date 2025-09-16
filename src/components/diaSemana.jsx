@@ -1,7 +1,7 @@
 import chuvaDia from '../assets/icons/chuvaDia.png';
 import diaNum from '../assets/icons/diaNub.png';
 import diaBom from '../assets/icons/diaBom.png';
-import { Fragment } from 'react';
+
 
 function DiasSemana(props) {
   const { maxSemana, minSemana, precipitationSum, cloudcover } = props;
@@ -31,7 +31,7 @@ function DiasSemana(props) {
   }
 
   return (
-    <Fragment>
+    <>
       <div className="bodyDiasDaSemana">
         {Array.isArray(diasDaSemana) &&
         Array.isArray(minSemana) &&
@@ -65,7 +65,7 @@ function DiasSemana(props) {
           <div>Valores de temperatura máxima não estão disponíveis.</div>
         )}
       </div>
-    </Fragment>
+    </>
   );
 }
 
