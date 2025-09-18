@@ -2,7 +2,7 @@ import axios from 'axios';
 import "./App.css";
 import DiaAtual from "./components/diaHoje";
 import { Fragment, useState } from "react";
-import TempAtual from "./components/TempAtual";
+import TempAtual from "./components/tempAtual";
 import Min_Max from "./components/min_max";
 import TempHora from "./components/tempHora";
 import Precipitation from "./components/previsao";
@@ -29,27 +29,36 @@ function App() {
   const [tempHoraAtual, setTempHoraAtual] = useState(0);
 
   const formatter = new Intl.DateTimeFormat("pt-BR", { hour: "numeric", minute: "numeric", hour12: false });
-  const API_KEY = "6c6a85e7ed87252729616bd1c3c5a758";
+  const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY;
 
   const getData = async () => {
-    if (!inputValue) return;
+  if (!inputValue) return;
 
-    try {
-      // 1) coordenadas
-      const geoResponse = await axios.get(
-        `https://api.openweathermap.org/data/2.5/weather?q=${inputValue}&appid=${API_KEY}&units=metric&lang=pt_br`
-      );
+  try {
+    // 1) Buscar coordenadas usando Geocoding API
+    const geoResponse = await axios.get(
+      `https://api.openweathermap.org/geo/1.0/direct?q=${inputValue}&limit=1&appid=${API_KEY}`
+    );
 
-      const { coord } = geoResponse.data;
-      const lat = coord.lat;
-      const lon = coord.lon;
+    if (!geoResponse.data || geoResponse.data.length === 0) {
+      window.alert("Cidade não encontrada. Verifique o nome.");
+      return;
+    }
 
-      //previsao
-      const weatherResponse = await axios.get(
-        `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&units=metric&lang=pt_br&exclude=alerts&appid=${API_KEY}`
-      );
+    const { lat, lon } = geoResponse.data[0];
 
-      const data = weatherResponse.data;
+    // 2) Buscar previsão usando One Call 3.0
+    const weatherResponse = await axios.get(
+      `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&units=metric&lang=pt_br&exclude=alerts&appid=${API_KEY}`
+    );
+
+    const data = weatherResponse.data;
+    console.log("DADOS DA API:", data);
+
+    if (!data.hourly || !data.daily) {
+      window.alert("Não foi possível carregar os dados do clima.");
+      return;
+    }
 
       // states
       const tempArr = data.hourly.map(h => h.temp);
@@ -88,7 +97,7 @@ function App() {
       <div className="body">
         <div className="mainEsq">
           <div className="cloudsIcon">
-            <img className="imageLogo" src="/images/logo.png" />
+            <img className="imageLogo" src="/public/vite.svg" />
           </div>
           <div className="inputPrincipal">
             <input
