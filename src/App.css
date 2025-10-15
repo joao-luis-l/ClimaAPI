@@ -80,56 +80,44 @@
 
 .divDiasDaSemana {
   display: flex;
-  flex-direction: row;              /* layout horizontal */
-  align-items: center;
-  justify-content: space-between;
-  border-radius: 14px;
-  padding: 10px 16px;
-  width: 24vw;                      /* largura */
-  min-width: 230px;
-  height: 11vh;                      /*altura */
-  color: #1a1a1a;
-  background: rgba(255, 255, 255, 0.25);
-  backdrop-filter: blur(5px);
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-  margin: 1vh 0;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  flex-direction: column;
+  border-radius: 20px;
+  color: black;
+  background: linear-gradient(to bottom, rgba(241, 241, 243, 0), rgba(203, 227, 247, 0.603));
+  position: relative;
+  margin-bottom: 2vh;
+  margin-right: 5px;
 }
 
-.divDiasDaSemana:hover {
-  transform: scale(1.03);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-/* Nome do dia (ex: SEG, TER...) */
-.pDiaDaSemana {
-  font-size: 2.6vh;
-  font-weight: 600;
-  margin: 0 10px;
-  color: #114b5f;
-}
-
-/* Ícone central */
-.animationIconSemana {
-  width: 45px;
-  height: 45px;
-  margin: 0 10px;
-}
-
-/* Temperaturas mín e máx */
-.componenteMinMaxSemana {
-  font-size: 2.3vh;
-  font-weight: 500;
+.headerSemana {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin: 0 10px;
+  flex-direction: row;
+  justify-content: space-around;
 }
 
+.pDiaDaSemana {
+  font-size: 17px;
+  display: flex;
+  margin: 0;
+}
 
+.componenteMinMaxSemana {
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+  margin: 3px;
+}
 
+.animationIconSemana {
+  width: 45%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  top: 0;
+  right: 0;
+}
+
+/* temperatura por hora */
 .tempHora {
   display: flex;
   color: black;
@@ -154,7 +142,7 @@
 }
 
 .diaTempHora {
-  font-size: 40px;
+  font-size: 20px;
   margin: 0;
 }
 
@@ -265,9 +253,9 @@
   padding: 0;
   overflow: hidden;
 
-  background: url('./assets/background_dia.png');
-  background-size: 100% 100%; 
-  image-rendering: pixelated; 
+  background: url('./assets/background_dia.png') no-repeat center center;
+  background-size: 100% 100%; /* <-- força a imagem a cobrir largura e altura */
+  image-rendering: pixelated; /* mantém o visual de pixel art */
 }
 
 .logo,

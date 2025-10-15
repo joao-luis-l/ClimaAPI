@@ -27,59 +27,43 @@ function App() {
   const [precipitationProbDay, setPrecipitationProbDay] = useState(0);
   const [precipitationProb, setPrecipitationProb] = useState([]);
   const [tempHoraAtual, setTempHoraAtual] = useState(0);
-  const [currentCityHour, setCurrentCityHour] = useState(new Date().getHours()); // ✅ NOVO STATE
 
   const formatter = new Intl.DateTimeFormat("pt-BR", { hour: "numeric", minute: "numeric", hour12: false });
   const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY;
 
   const getData = async () => {
-    if (!inputValue) return;
+  if (!inputValue) return;
 
-    try {
-      const geoResponse = await axios.get(
-        `https://api.openweathermap.org/geo/1.0/direct?q=${inputValue}&limit=1&appid=${API_KEY}`
-      );
+  try {
+    // 1) Buscar coordenadas usando Geocoding API
+    const geoResponse = await axios.get(
+      `https://api.openweathermap.org/geo/1.0/direct?q=${inputValue}&limit=1&appid=${API_KEY}`
+    );
 
-      if (!geoResponse.data || geoResponse.data.length === 0) {
-        window.alert("Cidade não encontrada. Verifique o nome.");
-        return;
-      }
+    if (!geoResponse.data || geoResponse.data.length === 0) {
+      window.alert("Cidade não encontrada. Verifique o nome.");
+      return;
+    }
 
-      const { lat, lon } = geoResponse.data[0];
+    const { lat, lon } = geoResponse.data[0];
 
-      const weatherResponse = await axios.get(
-        `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&units=metric&lang=pt_br&exclude=alerts&appid=${API_KEY}`
-      );
+    // 2) Buscar previsão usando One Call 3.0
+    const weatherResponse = await axios.get(
+      `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&units=metric&lang=pt_br&exclude=alerts&appid=${API_KEY}`
+    );
 
-      const data = weatherResponse.data;
-      console.log("DADOS DA API:", data);
+    const data = weatherResponse.data;
+    console.log("DADOS DA API:", data);
 
-      if (!data.hourly || !data.daily) {
-        window.alert("Não foi possível carregar os dados do clima.");
-        return;
-      }
+    if (!data.hourly || !data.daily) {
+      window.alert("Não foi possível carregar os dados do clima.");
+      return;
+    }
 
-      // ✅ Pegar a hora atual da cidade pesquisada (não a hora local do navegador)
-      const cityCurrentTime = new Date(data.current.dt * 1000);
-      const cityHour = cityCurrentTime.getUTCHours(); // Hora UTC
-      
-      // Ajustar para o timezone da cidade
-      const timezoneOffsetHours = data.timezone_offset / 3600; // offset em horas
-      const adjustedHour = (cityHour + timezoneOffsetHours) % 24;
-      
-      console.log("⏰ HORA DA CIDADE:", {
-        timestamp: data.current.dt,
-        cityTime: cityCurrentTime.toISOString(),
-        utcHour: cityHour,
-        timezoneOffset: timezoneOffsetHours,
-        adjustedHour: Math.floor(adjustedHour)
-      });
-
-      // States
+      // states
       const tempArr = data.hourly.map(h => h.temp);
       setTemperature2(tempArr);
-      setTempHoraAtual(tempArr[Math.floor(adjustedHour)]); // Usar hora ajustada
-      setCurrentCityHour(Math.floor(adjustedHour)); // ✅ SETAR HORA DA CIDADE
+      setTempHoraAtual(tempArr[new Date().getHours()]);
       setMin(data.daily[0].temp.min);
       setMax(data.daily[0].temp.max);
       setMinSemana(data.daily.slice(1, 7).map(d => d.temp.min));
@@ -108,7 +92,6 @@ function App() {
         sunrise={formatter.format(sunriseDate)}
         sunset={formatter.format(sunsetDate)}
         cloudcover={cloudcover}
-        currentHour={currentCityHour} // ✅ PASSAR HORA DA CIDADE
       />
 
       <div className="body">
