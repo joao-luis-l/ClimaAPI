@@ -1,19 +1,17 @@
-// src/components/Background.jsx
-import diaBom from '../assets/backgrounds/diaSol.png'
-import noiteBoa from '../assets/backgrounds/noiteBoaBc.png'
-import diaChuva from '../assets/backgrounds/diaSol.png'      
-import noiteChuva from '../assets/backgrounds/noiteBoaBc.png' 
-import diaNum from '../assets/backgrounds/diaSol.png'       
-import noiteNum from '../assets/backgrounds/noiteBoaBc.png'
+import React from 'react'
+import diaBom from '../assets/images/sol.png'
+import noiteBoa from '../assets/images/noite.png'
+import diaChuva from '../assets/images/solChuva.png'      
+import noiteChuva from '../assets/images/noiteChuva.png' 
+import diaNum from '../assets/images/solNub.png'       
+import noiteNum from '../assets/images/noiteNub.png'
 
 function Background(props) {
   const { precipitationSumDay, sunset, sunrise, cloudcover } = props
 
-  // hora atual como número (0..23)
   const hoje = new Date()
   const hours = hoje.getHours()
 
-  // converte sunrise/sunset que podem vir como "HH:MM" ou número
   const parseHour = (val, fallback) => {
     if (val == null) return fallback
     if (typeof val === 'number') {
@@ -25,16 +23,20 @@ function Background(props) {
     return Number.isNaN(parsed) ? fallback : parsed
   }
 
-  const horaSunrise = parseHour(sunrise, 6)
-  const horaSunset = parseHour(sunset, 18)
+  const horaSunrise = parseHour(sunset, 6)   
+  const horaSunset = parseHour(sunrise, 18)  
+  
+  console.log('debug background:', {
+    hours,
+    horaSunrise,
+    horaSunset,
+    isNight: (hours >= horaSunset) || (hours < horaSunrise),
+  })
 
-  // pega cloudcover de forma robusta (index number ou string)
   const cloudcoverHour = (cloudcover && (cloudcover[hours] ?? cloudcover[String(hours)])) ?? 0
-
-  // define se é noite: hora >= sunset OR hora < sunrise
   const isNight = (hours >= horaSunset) || (hours < horaSunrise)
 
-  // regras visuais (ajuste thresholds se quiser)
+
   if (cloudcoverHour > 40 && (precipitationSumDay ?? 0) >= 5 && isNight) {
     return (<div className='background'><img src={noiteChuva} alt="noite chuva" /></div>)
   }
@@ -47,7 +49,7 @@ function Background(props) {
     return (<div className='background'><img src={noiteBoa} alt="noite clara" /></div>)
   }
 
-  // dia
+
   if (cloudcoverHour > 40 && (precipitationSumDay ?? 0) >= 5) {
     return (<div className='background'><img src={diaChuva} alt="dia chuva" /></div>)
   }

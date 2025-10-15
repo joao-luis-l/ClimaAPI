@@ -35,7 +35,7 @@ function App() {
   if (!inputValue) return;
 
   try {
-    // 1) Buscar coordenadas usando Geocoding API
+    
     const geoResponse = await axios.get(
       `https://api.openweathermap.org/geo/1.0/direct?q=${inputValue}&limit=1&appid=${API_KEY}`
     );
@@ -47,7 +47,7 @@ function App() {
 
     const { lat, lon } = geoResponse.data[0];
 
-    // 2) Buscar previsão usando One Call 3.0
+    
     const weatherResponse = await axios.get(
       `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&units=metric&lang=pt_br&exclude=alerts&appid=${API_KEY}`
     );
