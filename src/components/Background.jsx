@@ -7,10 +7,9 @@ import diaNum from '../assets/images/solNub.png'
 import noiteNum from '../assets/images/noiteNub.png'
 
 function Background(props) {
-  const { precipitationSumDay, sunset, sunrise, cloudcover } = props
+  const { precipitationSumDay, sunset, sunrise, cloudcover, currentHour } = props
 
-  const hoje = new Date()
-  const hours = hoje.getHours()
+  const hours = currentHour ?? new Date().getHours()
 
   const parseHour = (val, fallback) => {
     if (val == null) return fallback
@@ -23,41 +22,52 @@ function Background(props) {
     return Number.isNaN(parsed) ? fallback : parsed
   }
 
-  const horaSunrise = parseHour(sunset, 6)   
-  const horaSunset = parseHour(sunrise, 18)  
+  const horaSunrise = parseHour(sunrise, 6)
+  const horaSunset = parseHour(sunset, 18)
   
-  console.log('debug background:', {
+  const cloudcoverHour = (cloudcover && cloudcover.length > 0) 
+    ? (cloudcover[hours] ?? 0) 
+    : 0
+  
+  const precipitacao = precipitationSumDay ?? 0
+  const isNight = (hours >= horaSunset) || (hours < horaSunrise)
+
+  console.log('🔍 DEBUG BACKGROUND:', {
     hours,
     horaSunrise,
     horaSunset,
-    isNight: (hours >= horaSunset) || (hours < horaSunrise),
+    isNight,
+    cloudcoverHour,
+    precipitacao,
+    resultado: isNight ? 'NOITE' : 'DIA'
   })
 
-  const cloudcoverHour = (cloudcover && (cloudcover[hours] ?? cloudcover[String(hours)])) ?? 0
-  const isNight = (hours >= horaSunset) || (hours < horaSunrise)
-
-
-  if (cloudcoverHour > 40 && (precipitationSumDay ?? 0) >= 5 && isNight) {
+  // Noite com chuva
+  if (cloudcoverHour > 40 && precipitacao >= 5 && isNight) {
     return (<div className='background'><img src={noiteChuva} alt="noite chuva" /></div>)
   }
 
-  if (cloudcoverHour > 40 && (precipitationSumDay ?? 0) < 5 && isNight) {
+  // Noite nublada
+  if (cloudcoverHour > 40 && precipitacao < 5 && isNight) {
     return (<div className='background'><img src={noiteNum} alt="noite nublado" /></div>)
   }
 
-  if ((cloudcoverHour <= 40) && isNight) {
+  // Noite clara
+  if (cloudcoverHour <= 40 && isNight) {
     return (<div className='background'><img src={noiteBoa} alt="noite clara" /></div>)
   }
 
-
-  if (cloudcoverHour > 40 && (precipitationSumDay ?? 0) >= 5) {
+  // Dia com chuva
+  if (cloudcoverHour > 40 && precipitacao >= 5) {
     return (<div className='background'><img src={diaChuva} alt="dia chuva" /></div>)
   }
 
-  if (cloudcoverHour > 40 && (precipitationSumDay ?? 0) < 5) {
+  // Dia nublado
+  if (cloudcoverHour > 40 && precipitacao < 5) {
     return (<div className='background'><img src={diaNum} alt="dia nublado" /></div>)
   }
 
+  // Dia claro
   return (<div className='background'><img src={diaBom} alt="dia claro" /></div>)
 }
 
