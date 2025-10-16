@@ -1,265 +1,518 @@
-
-.diaAtual {
-  font-size: 5vh;
-  display: flex;
-  justify-content: center;
+/* ========================================
+   VARIÁVEIS CSS
+   ======================================== */
+:root {
+  --color-text-primary: #000;
+  --color-text-secondary: rgba(0, 0, 0, 0.7);
+  --color-background-glass: rgba(203, 227, 247, 0.6);
+  --color-background-light: rgba(241, 241, 243, 0);
+  
+  --spacing-xs: 3px;
+  --spacing-sm: 5px;
+  --spacing-md: 10px;
+  --spacing-lg: 20px;
+  --spacing-xl: 50px;
+  
+  --border-radius-sm: 12px;
+  --border-radius-md: 16px;
+  --border-radius-lg: 20px;
+  
+  --font-size-sm: 14px;
+  --font-size-md: 17px;
+  --font-size-lg: 20px;
+  --font-size-xl: 5vh;
+  --font-size-xxl: 15vh;
 }
 
-.background {
-  z-index: -1;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
-
-.background img {
-  position: absolute;
-  z-index: -1;
-  width: 100%;
-  height: 100%;
-}
-
-/* Icone temp atual */
-.divIconeTemp {
-  width: 100%;
-  height: 18vh;
-}
-
-/* Input principal */
-.inputPrincipal {
-  display: flex;
-  flex-direction: column;
-  color: black;
-  margin-left: 5vw;
-}
-
-._max_sunrise_sunset {
-  display: flex;
-}
-
-.icon_min_max {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  width: 12vw;
-  height: fit-content;
-}
-
-.body {
-  display: flex;
-  flex-direction: row;
-  padding: 20px;
-}
-
-/* Mains */
-.mainEsq {
-  display: flex;
-  flex-direction: column;
-  width: 70vw;
-  height: 90vh;
-  justify-content: space-between;
-  margin-right: 3vh;
-}
-
-.mainDir {
-  display: flex;
-  flex-direction: row-reverse;
-  color: black;
-  width: 30vw;
-  height: 80vh;
-}
-
-/* Dias da Semana */
-
-.divDiasDaSemana {
-  display: flex;
-  flex-direction: column;
-  border-radius: 20px;
-  color: black;
-  background: linear-gradient(to bottom, rgba(241, 241, 243, 0), rgba(203, 227, 247, 0.603));
-  position: relative;
-  margin-bottom: 2vh;
-  margin-right: 5px;
-}
-
-.headerSemana {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-}
-
-.pDiaDaSemana {
-  font-size: 17px;
-  display: flex;
-  margin: 0;
-}
-
-.componenteMinMaxSemana {
-  font-size: 14px;
-  display: flex;
-  justify-content: center;
-  margin: 3px;
-}
-
-.animationIconSemana {
-  width: 45%;
-  height: auto;
-  display: flex;
-  justify-content: center;
-  top: 0;
-  right: 0;
-}
-
-/* temperatura por hora */
-.tempHora {
-  display: flex;
-  color: black;
-  background: linear-gradient(to bottom, rgba(241, 241, 243, 0), rgba(203, 227, 247, 0.603));
-  border-radius: 16px;
-  width: fit-content;
-  justify-content: space-around;
-}
-
-.componenteTempHora {
-  display: flex;
-  flex-direction: row;
-  font-size: 21px;
-  margin-left: 20px;
-  margin-right: 20px;
-}
-
-.componenteInternoTempHora {
-  margin: 4px;
-  margin-top: 3px;
-  font-size: 2.5vh;
-}
-
-.diaTempHora {
-  font-size: 20px;
-  margin: 0;
-}
-
-.infoMomentoSL {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 70vh;
-}
-
-.infoMomento {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin: 50px;
-}
-
-.min_max {
-  display: flex;
-  justify-content: center;
-  margin: 15px;
-}
-
-.componenteMinMax {
-  display: flex;
-  margin-left: 3px;
-  justify-content: center;
-}
-
-.componenteMin {
-  margin-right: 3px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-.componenteMin p {
-  margin-right: 3px;
-}
-
-.componenteMax {
-  margin-right: 3px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-.componenteMax p {
-  margin-right: 3px;
-}
-
-.componenteTempAtual {
-  font-size: 15vh;
-}
-
-.precipitation {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.componentPreciptation {
-  width: max-content;
-}
-
-.componentPreciptation p {
-  margin: 0;
-}
-
-.mainSup {
-  display: flex;
-}
-
-.mainInf {
-  width: 100%;
-  margin-top: 2vh;
-}
-
-.sunriseSunset {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-}
-
-.componenteSunrise {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  margin: 10px;
-}
-
-.componenteSunset {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  margin: 10px;
-}
-
-
-
-.app-background {
-  width: 100vw;
-  height: 100vh;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-
-  background: url('./assets/background_dia.png') no-repeat center center;
-  background-size: 100% 100%; /* <-- força a imagem a cobrir largura e altura */
-  image-rendering: pixelated; /* mantém o visual de pixel art */
+/* ========================================
+   RESET E UTILITÁRIOS
+   ======================================== */
+* {
+  box-sizing: border-box;
 }
 
 .logo,
 img[src*="vite.svg"] {
   display: none !important;
   visibility: hidden !important;
+}
+
+/* ========================================
+   BACKGROUND - PIXEL ART
+   ======================================== */
+.background {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #000; /* Fallback enquanto carrega */
+}
+
+.background img {
+  position: absolute;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  
+  /* Preserva a qualidade do pixel art - ESSENCIAL! */
+  image-rendering: pixelated; /* Chrome, Edge, Opera */
+  image-rendering: -moz-crisp-edges; /* Firefox */
+  image-rendering: crisp-edges; /* Safari 10+ */
+  -ms-interpolation-mode: nearest-neighbor; /* IE (legado) */
+  
+  /* Ajuste para cobrir toda a tela SEM cortar */
+  object-fit: cover; /* Mudado de cover para contain */
+  object-position: center; /* Centraliza horizontal e verticalmente */
+  width: 100%;
+  height: 100%;
+  
+  /* Transição suave entre backgrounds */
+  transition: opacity 0.5s ease-in-out;
+}
+
+/* Classe global para todos os elementos pixel art */
+.pixel-art {
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  -ms-interpolation-mode: nearest-neighbor;
+}
+
+/* Para ícones de clima em pixel art */
+.pixel-icon {
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  object-fit: contain;
+}
+
+/* Animação suave para ícones pixel art */
+@keyframes pixel-float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.pixel-icon-animated {
+  animation: pixel-float 3s ease-in-out infinite;
+}
+
+/* ========================================
+   LAYOUT PRINCIPAL
+   ======================================== */
+.body {
+  display: flex;
+  flex-direction: row;
+  padding: var(--spacing-lg);
+  gap: var(--spacing-md);
+  min-height: 100vh;
+}
+
+.mainEsq {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  max-width: 70vw;
+  height: 90vh;
+  justify-content: space-between;
+}
+
+.mainDir {
+  display: flex;
+  flex-direction: column-reverse;
+  width: 30vw;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+/* ========================================
+   INPUT DE BUSCA
+   ======================================== */
+.inputPrincipal {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin-left: 5vw;
+  margin-bottom: var(--spacing-lg);
+}
+
+.city {
+  width: 100%;
+  max-width: 400px;
+  padding: 12px 16px;
+  font-size: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: var(--border-radius-sm);
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  color: var(--color-text-primary);
+  transition: all 0.3s ease;
+}
+
+.city:focus {
+  outline: none;
+  border-color: rgba(74, 144, 226, 0.6);
+  background: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 12px rgba(74, 144, 226, 0.2);
+}
+
+.city:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.city::placeholder {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+/* Estados de Loading e Erro */
+.loading-text {
+  display: block;
+  color: #4a90e2;
+  font-size: var(--font-size-sm);
+  margin-top: 8px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.error-text {
+  display: block;
+  color: #e74c3c;
+  font-size: var(--font-size-sm);
+  margin-top: 8px;
+  background: rgba(231, 76, 60, 0.1);
+  padding: 8px 12px;
+  border-radius: 8px;
+  border-left: 3px solid #e74c3c;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* ========================================
+   INFORMAÇÕES DO MOMENTO
+   ======================================== */
+.infoMomento {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: var(--spacing-xl);
+}
+
+.infoMomentoSL {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 70vh;
+  gap: var(--spacing-lg);
+}
+
+/* Dia Atual */
+.diaAtual {
+  font-size: var(--font-size-xl);
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Temperatura Atual */
+.componenteTempAtual {
+  font-size: var(--font-size-xxl);
+  font-weight: 600;
+  line-height: 1;
+}
+
+/* ========================================
+   ÍCONE E MIN/MAX
+   ======================================== */
+.icon_min_max {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: var(--spacing-lg); /* Aumentado o espaçamento */
+}
+
+/* Min/Max Temperature */
+.componenteMinMax {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-size: 20px; /* Aumentado */
+  font-weight: 600;
+}
+
+.componenteMin,
+.componenteMax {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.componenteMin p,
+.componenteMax p {
+  margin: 0;
+  font-weight: 600;
+}
+
+/* Precipitação */
+.componentPreciptation {
+  text-align: center;
+  font-size: 16px; /* Aumentado de 14px */
+  font-weight: 500;
+}
+
+.componentPreciptation p {
+  margin: 0;
+}
+
+/* ========================================
+   TEMPERATURA POR HORA
+   ======================================== */
+.diaTempHora {
+  font-size: var(--font-size-lg);
+  margin: var(--spacing-md) 0;
+  font-weight: 600;
+}
+
+.tempHora {
+  display: flex;
+  align-items: center;
+  color: var(--color-text-primary);
+  background: linear-gradient(
+    to bottom,
+    var(--color-background-light),
+    var(--color-background-glass)
+  );
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-md);
+  width: fit-content;
+  overflow-x: auto;
+  gap: var(--spacing-sm);
+}
+
+.componenteTempHora {
+  display: flex;
+  gap: var(--spacing-lg);
+  font-size: 21px;
+}
+
+.componenteInternoTempHora {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  font-size: 2.5vh;
+  padding: var(--spacing-xs);
+  white-space: nowrap;
+}
+
+/* Nascer/Pôr do Sol */
+.componenteSunrise,
+.componenteSunset {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: var(--spacing-md);
+  text-align: center;
+}
+
+.componenteSunrise p,
+.componenteSunset p {
+  margin: 0 0 var(--spacing-xs) 0;
+  font-weight: 500;
+  font-size: var(--font-size-sm);
+}
+
+/* ========================================
+   DIAS DA SEMANA
+   ======================================== */
+.bodyDiasDaSemana {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.divDiasDaSemana {
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--border-radius-md); /* Reduzido de lg */
+  color: var(--color-text-primary);
+  background: linear-gradient(
+    to bottom,
+    var(--color-background-light),
+    var(--color-background-glass)
+  );
+  padding: 12px 16px; /* Reduzido de 20px */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  min-height: 80px; /* Reduzido de 100px */
+  margin-bottom: 8px; /* Reduzido de 2vh */
+}
+
+.divDiasDaSemana:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.headerSemana {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-sm); /* Reduzido */
+  margin-bottom: 4px; /* Reduzido */
+}
+
+.pDiaDaSemana {
+  font-size: 16px; /* Reduzido de 18px */
+  font-weight: 600;
+  margin: 0;
+  flex: 1;
+}
+
+.animationIconSemana {
+  width: 50px; /* Reduzido de 70px */
+  height: 50px;
+  object-fit: contain;
+}
+
+.componenteMinMaxSemana {
+  font-size: 20px; /* Reduzido de 24px mas ainda maior que o original */
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px; /* Reduzido */
+  color: var(--color-text-primary);
+}
+
+.divTempMinSemana,
+.divTempMaxSemana {
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.divTempMinSemana {
+  color: black; /
+}
+
+.divTempMaxSemana {
+  color: black;
+}
+
+/* ========================================
+   RESPONSIVIDADE
+   ======================================== */
+@media (max-width: 1024px) {
+  .body {
+    flex-direction: column;
+    padding: var(--spacing-md);
+  }
+  
+  .mainEsq,
+  .mainDir {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+  }
+  
+  .infoMomentoSL {
+    flex-direction: column;
+    max-width: 100%;
+  }
+  
+  .tempHora {
+    width: 100%;
+    overflow-x: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --font-size-xl: 4vh;
+    --font-size-xxl: 10vh;
+  }
+  
+  .inputPrincipal {
+    margin-left: 0;
+  }
+  
+  .city {
+    max-width: 100%;
+  }
+  
+  .infoMomento {
+    margin: var(--spacing-lg) 0;
+  }
+  
+  .componenteTempHora {
+    gap: var(--spacing-md);
+  }
+}
+
+@media (max-width: 480px) {
+  .body {
+    padding: var(--spacing-sm);
+  }
+  
+  .componenteTempHora {
+    font-size: 16px;
+  }
+  
+  .componenteInternoTempHora {
+    font-size: 2vh;
+  }
+  
+  .animationIconSemana {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+/* ========================================
+   ACESSIBILIDADE
+   ======================================== */
+.city:focus-visible {
+  outline: 3px solid #4a90e2;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ========================================
+   SCROLLBAR CUSTOMIZADA
+   ======================================== */
+.mainDir::-webkit-scrollbar,
+.tempHora::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.mainDir::-webkit-scrollbar-track,
+.tempHora::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.mainDir::-webkit-scrollbar-thumb,
+.tempHora::-webkit-scrollbar-thumb {
+  background: rgba(74, 144, 226, 0.5);
+  border-radius: 4px;
+}
+
+.mainDir::-webkit-scrollbar-thumb:hover,
+.tempHora::-webkit-scrollbar-thumb:hover {
+  background: rgba(74, 144, 226, 0.7);
 }

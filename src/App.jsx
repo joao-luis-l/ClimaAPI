@@ -1,7 +1,9 @@
-import axios from 'axios';
+import { Fragment, useState, useCallback } from "react";
+import axios from "axios";
 import "./App.css";
+
+// Components
 import DiaAtual from "./components/diaHoje";
-import { Fragment, useState } from "react";
 import TempAtual from "./components/tempAtual";
 import Min_Max from "./components/min_max";
 import TempHora from "./components/tempHora";
@@ -10,103 +12,167 @@ import DiasDaSemana from "./components/diaSemana";
 import Background from "./components/Background";
 import IconeTemp from "./components/iconeTemp";
 
+// Constants
+const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY;
+const INITIAL_CITY = "Porto Alegre";
+
+// Utils
+const formatTime = (date) => {
+  return new Intl.DateTimeFormat("pt-BR", {
+    hour: "numeric",
+    minute: "numeric",
+    hour12: false,
+  }).format(date);
+};
+
 function App() {
-  const [inputValue, setInputValue] = useState("Porto Alegre");
-  const [temperature2, setTemperature2] = useState([]);
-  const [min, setMin] = useState(0);
-  const [max, setMax] = useState(0);
-  const [minSemana, setMinSemana] = useState([]);
-  const [maxSemana, setMaxSemana] = useState([]);
-  const [sunriseDate, setSunrise] = useState(new Date());
-  const [sunsetDate, setSunset] = useState(new Date());
-  const [sunriseSemana, setSunriseSemana] = useState([]);
-  const [sunsetSemana, setSunsetSemana] = useState([]);
-  const [cloudcover, setCloudcover] = useState([]);
-  const [precipitationSumDay, setPrecipitationSumDay] = useState(0);
-  const [precipitationSum, setPrecipitationSum] = useState([]);
-  const [precipitationProbDay, setPrecipitationProbDay] = useState(0);
-  const [precipitationProb, setPrecipitationProb] = useState([]);
-  const [tempHoraAtual, setTempHoraAtual] = useState(0);
+  // Estado consolidado
+  const [inputValue, setInputValue] = useState(INITIAL_CITY);
+  const [weatherData, setWeatherData] = useState({
+    temperature2: [],
+    tempHoraAtual: 0,
+    min: 0,
+    max: 0,
+    minSemana: [],
+    maxSemana: [],
+    sunriseDate: new Date(),
+    sunsetDate: new Date(),
+    sunriseSemana: [],
+    sunsetSemana: [],
+    cloudcover: [],
+    precipitationSumDay: 0,
+    precipitationSum: [],
+    precipitationProbDay: 0,
+    precipitationProb: [],
+  });
 
-  const formatter = new Intl.DateTimeFormat("pt-BR", { hour: "numeric", minute: "numeric", hour12: false });
-  const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY;
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const getData = async () => {
-  if (!inputValue) return;
-
-  try {
-    // 1) Buscar coordenadas usando Geocoding API
-    const geoResponse = await axios.get(
-      `https://api.openweathermap.org/geo/1.0/direct?q=${inputValue}&limit=1&appid=${API_KEY}`
+  // Função para buscar coordenadas
+  const fetchCoordinates = async (city) => {
+    const response = await axios.get(
+      `https://api.openweathermap.org/geo/1.0/direct`,
+      {
+        params: {
+          q: city,
+          limit: 1,
+          appid: API_KEY,
+        },
+      }
     );
 
-    if (!geoResponse.data || geoResponse.data.length === 0) {
-      window.alert("Cidade não encontrada. Verifique o nome.");
-      return;
+    if (!response.data || response.data.length === 0) {
+      throw new Error("Cidade não encontrada. Verifique o nome.");
     }
 
-    const { lat, lon } = geoResponse.data[0];
+    return response.data[0];
+  };
 
-    // 2) Buscar previsão usando One Call 3.0
-    const weatherResponse = await axios.get(
-      `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&units=metric&lang=pt_br&exclude=alerts&appid=${API_KEY}`
+  // Função para buscar dados do clima
+  const fetchWeatherData = async (lat, lon) => {
+    const response = await axios.get(
+      `https://api.openweathermap.org/data/3.0/onecall`,
+      {
+        params: {
+          lat,
+          lon,
+          units: "metric",
+          lang: "pt_br",
+          exclude: "alerts",
+          appid: API_KEY,
+        },
+      }
     );
 
-    const data = weatherResponse.data;
-    console.log("DADOS DA API:", data);
-
-    if (!data.hourly || !data.daily) {
-      window.alert("Não foi possível carregar os dados do clima.");
-      return;
+    if (!response.data.hourly || !response.data.daily) {
+      throw new Error("Não foi possível carregar os dados do clima.");
     }
 
-      // states
-      const tempArr = data.hourly.map(h => h.temp);
-      setTemperature2(tempArr);
-      setTempHoraAtual(tempArr[new Date().getHours()]);
-      setMin(data.daily[0].temp.min);
-      setMax(data.daily[0].temp.max);
-      setMinSemana(data.daily.slice(1, 7).map(d => d.temp.min));
-      setMaxSemana(data.daily.slice(1, 7).map(d => d.temp.max));
-      setSunrise(new Date(data.daily[0].sunrise * 1000));
-      setSunset(new Date(data.daily[0].sunset * 1000));
-      setSunriseSemana(data.daily.map(d => new Date(d.sunrise * 1000)));
-      setSunsetSemana(data.daily.map(d => new Date(d.sunset * 1000)));
-      setCloudcover(data.hourly.map(h => h.clouds));
-      setPrecipitationSumDay(data.daily[0].rain || 0);
-      setPrecipitationSum(data.daily.slice(1, 7).map(d => d.rain || 0));
-      setPrecipitationProbDay(data.daily[0].pop * 100);
-      setPrecipitationProb(data.daily.slice(1, 7).map(d => d.pop * 100));
+    return response.data;
+  };
 
-    } catch (error) {
-      console.error("Erro ao buscar dados da API:", error);
-      window.alert("Ocorreu um erro ao buscar os dados da cidade.");
+  // Função para processar dados da API
+  const processWeatherData = (data) => {
+    const currentHour = new Date().getHours();
+    const tempArr = data.hourly.map((h) => h.temp);
+
+    return {
+      temperature2: tempArr,
+      tempHoraAtual: tempArr[currentHour] || 0,
+      min: data.daily[0].temp.min,
+      max: data.daily[0].temp.max,
+      minSemana: data.daily.slice(1, 7).map((d) => d.temp.min),
+      maxSemana: data.daily.slice(1, 7).map((d) => d.temp.max),
+      sunriseDate: new Date(data.daily[0].sunrise * 1000),
+      sunsetDate: new Date(data.daily[0].sunset * 1000),
+      sunriseSemana: data.daily.map((d) => new Date(d.sunrise * 1000)),
+      sunsetSemana: data.daily.map((d) => new Date(d.sunset * 1000)),
+      cloudcover: data.hourly.map((h) => h.clouds),
+      precipitationSumDay: data.daily[0].rain || 0,
+      precipitationSum: data.daily.slice(1, 7).map((d) => d.rain || 0),
+      precipitationProbDay: (data.daily[0].pop || 0) * 100,
+      precipitationProb: data.daily.slice(1, 7).map((d) => (d.pop || 0) * 100),
+    };
+  };
+
+  // Função principal para buscar dados
+  const getData = useCallback(async () => {
+    if (!inputValue.trim()) return;
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      // 1. Buscar coordenadas
+      const { lat, lon } = await fetchCoordinates(inputValue);
+
+      // 2. Buscar dados do clima
+      const data = await fetchWeatherData(lat, lon);
+
+      // 3. Processar e atualizar estado
+      const processedData = processWeatherData(data);
+      setWeatherData(processedData);
+
+      console.log("Dados carregados com sucesso:", processedData);
+    } catch (err) {
+      console.error("Erro ao buscar dados:", err);
+      setError(err.message || "Ocorreu um erro ao buscar os dados da cidade.");
+    } finally {
+      setLoading(false);
+    }
+  }, [inputValue]);
+
+  // Handler para tecla Enter
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      getData();
     }
   };
 
   return (
     <Fragment>
       <Background
-        className='background'
-        precipitationSumDay={precipitationSumDay}
-        sunrise={formatter.format(sunriseDate)}
-        sunset={formatter.format(sunsetDate)}
-        cloudcover={cloudcover}
+        precipitationSumDay={weatherData.precipitationSumDay}
+        sunrise={formatTime(weatherData.sunriseDate)}
+        sunset={formatTime(weatherData.sunsetDate)}
+        cloudcover={weatherData.cloudcover}
       />
 
       <div className="body">
         <div className="mainEsq">
-          <div className="cloudsIcon">
-            <img className="imageLogo" src="/public/vite.svg" />
-          </div>
           <div className="inputPrincipal">
             <input
               className="city"
-              placeholder=" &#x1F4CD; Cidade"
+              placeholder=" 📍 Cidade"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && getData()}
+              onKeyDown={handleKeyDown}
+              disabled={loading}
+              aria-label="Nome da cidade"
             />
+            {loading && <span className="loading-text">Carregando...</span>}
+            {error && <span className="error-text">{error}</span>}
           </div>
 
           <div className="infoMomento">
@@ -114,43 +180,40 @@ function App() {
               <div className="tempDiaEPrec">
                 <div className="tempEPrec">
                   <div className="tempAtual">
-                    <TempAtual temperature={tempHoraAtual} />
+                    <TempAtual temperature={weatherData.tempHoraAtual} />
                   </div>
                   <div className="diaAtual">
                     <DiaAtual />
                   </div>
                 </div>
               </div>
+
               <div className="icon_min_max">
-                <IconeTemp
-                  precipitationSumDay={precipitationSumDay}
-                  cloudcover={cloudcover}
-                  sunrise={formatter.format(sunriseDate)}
-                  sunset={formatter.format(sunsetDate)}
+                <Min_Max min={weatherData.min} max={weatherData.max} />
+                <Precipitation
+                  precipitationSumDay={weatherData.precipitationSumDay}
                 />
-                <Min_Max min={min} max={max} />
-                <Precipitation precipitationSumDay={precipitationSumDay} />
               </div>
             </div>
           </div>
 
           <h6 className="diaTempHora">Hoje</h6>
           <TempHora
-            temperature2={temperature2}
-            sunrise={formatter.format(sunriseDate)}
-            sunset={formatter.format(sunsetDate)}
+            temperature2={weatherData.temperature2}
+            sunrise={formatTime(weatherData.sunriseDate)}
+            sunset={formatTime(weatherData.sunsetDate)}
           />
         </div>
 
         <div className="mainDir">
           <DiasDaSemana
-            maxSemana={maxSemana}
-            minSemana={minSemana}
-            cloudcover={cloudcover}
-            precipitationProb={precipitationProb}
-            precipitationSum={precipitationSum}
-            sunriseSemana={sunriseSemana}
-            sunsetSemana={sunsetSemana}
+            maxSemana={weatherData.maxSemana}
+            minSemana={weatherData.minSemana}
+            cloudcover={weatherData.cloudcover}
+            precipitationProb={weatherData.precipitationProb}
+            precipitationSum={weatherData.precipitationSum}
+            sunriseSemana={weatherData.sunriseSemana}
+            sunsetSemana={weatherData.sunsetSemana}
           />
         </div>
       </div>
